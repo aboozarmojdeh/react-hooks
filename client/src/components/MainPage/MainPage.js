@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-
+import EditUser from '../EditUser/EditUser';
 const MainPage = () => {
 
     const [users, setUsers] = useState([]);
@@ -12,26 +12,37 @@ const MainPage = () => {
     const [todo_check, setTodoCheck] = useState(false);
 
     const onChangeInputName = (event) => {
-        console.log(event.target.value)
+        // console.log(event.target.value)
         setName(event.target.value)
     }
 
     const onChangeInputEmail = (event) => {
-        console.log(event.target.value)
+        // console.log(event.target.value)
         setEmail(event.target.value)
     }
 
     const onChangeInputTodoDate = (event) => {
-        console.log(event.target.value)
+        // console.log(event.target.value)
         setTodoDate(event.target.value)
     }
 
     const onChangeInputTodoCheck = (event) => {
-        console.log(event.target.value)
+        // console.log(event.target.value)
         setTodoCheck(event.target.value)
     }
 
+const deleteUserButton=(id)=>{
 
+try {
+    const response=fetch(`http://localhost:5000/users/${id}`,{
+        method:"DELETE"
+    });
+   
+    setUsers(users.filter(user=>user.id!==id))
+} catch (err) {
+    console.error(err.message)
+}
+}
    
 
     const renderedUsers = users.map((user) => {
@@ -41,6 +52,8 @@ const MainPage = () => {
                 <td>{user.email}</td>
                 <td>{user.todo_date}</td>
                 <td>{String(user.todo_check)}</td>
+                <td><EditUser /></td>
+                <td><button className="btn btn-danger" onClick={()=>deleteUserButton(user.id)}>Delete</button></td>
             </tr>
         )
     });
@@ -55,21 +68,25 @@ const MainPage = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
             });
-            console.log(response);
+            // console.log(response);
             setUserEffect(userEffect+1)
+            document.getElementById("todoName").value=""
+            document.getElementById("todoEmail").value=""
+            document.getElementById("TodoDate").value=""
+            document.getElementById("TodoChecked").value=""
 
         } catch (err) {
             console.error(err.message)
         }
     };
     useEffect(() => {
-        console.log("length",users.length)
+        // console.log("length",users.length)
         const getUserData = async () => {
             const response = await fetch('http://localhost:5000/users');
             const allUsers = await response.json();
             setUsers(allUsers);
-            console.log("length",users.length)
-            console.log("users", users)
+            // console.log("length",users.length)
+            // console.log("users", users)
         };
         getUserData();
 
