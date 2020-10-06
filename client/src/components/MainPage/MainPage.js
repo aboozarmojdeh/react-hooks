@@ -50,9 +50,9 @@ try {
             <tr key={user.id}>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td>{user.todo_date}</td>
+                <td>{user.todo_date.slice(0,10)}</td>
                 <td>{String(user.todo_check)}</td>
-                <td><EditUser /></td>
+                <td><EditUser user={user} userEffect={userEffect}/></td>
                 <td><button className="btn btn-danger" onClick={()=>deleteUserButton(user.id)}>Delete</button></td>
             </tr>
         )
@@ -103,6 +103,7 @@ try {
                     placeholder="Enter name"
                     id="todoName"
                     onChange={onChangeInputName}
+                    required
                 />
                 <input
                     className="form-control"
@@ -110,12 +111,14 @@ try {
                     placeholder="Enter email"
                     id="todoEmail"
                     onChange={onChangeInputEmail}
+                    required
                 />
                 <input
                     className="form-control"
                     type="date"
                     id="TodoDate"
                     onChange={onChangeInputTodoDate}
+                    required
                 />
 
                 <input
@@ -124,9 +127,11 @@ try {
                     id="TodoChecked"
                     placeholder="False or True"
                     onChange={onChangeInputTodoCheck}
+                    required
                 />
 
                 <button className="btn btn-success">Add</button>
+                <input className="btn btn-grey" type="reset" />
             </form>
 
             <br />
